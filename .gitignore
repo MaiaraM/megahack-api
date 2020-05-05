@@ -5,3 +5,4 @@ mvnw*
 .classpath
 .factorypath
 .project
+migration.sql

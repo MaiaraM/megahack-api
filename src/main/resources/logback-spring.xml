@@ -1,0 +1,44 @@
+<configuration>
+
+    <property resource="api-log.properties" />
+    <!-- Allows the project to optionally override the api's log config
+        by creating a xml file that includes a different .properties to set the properties -->
+    <include optional="true" resource="logback-local.xml" />
+
+    <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="DEBUG"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{HH:mm:ss.SSS} Trace ID: [%X{X-B3-TraceId:-}] %highlight(%-5level) %cyan(%logger{0}) - %msg %n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ROLLING_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.folder}/${log.filename}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${log.folder}/${log.filename}.%d{yyyy-MM-dd}.%i.html</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 50MB -->
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- keep one week worth of history -->
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{dd/MM/YYYY - HH:mm:ss.SSS} Trace ID: [%X{X-B3-TraceId:-}] %highlight(%-5level) %cyan(%logger{0}) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="debug">
+        <appender-ref ref="ROLLING_LOG" />
+    </root>
+
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</configuration>

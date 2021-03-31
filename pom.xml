@@ -180,7 +180,7 @@
 
 		<dependency>
 			<groupId>com.google.guava</groupId>
-			<version>28.0-jre</version>
+			<version>29.0-jre</version>
 			<artifactId>guava</artifactId>
 		</dependency>
 
